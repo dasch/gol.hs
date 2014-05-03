@@ -2,24 +2,34 @@ import Data.List
 import Control.Monad
 
 data Cell = Cell Int Int deriving (Show, Eq)
-type World = [Cell]
+data World = World [Cell]
+
+instance Show World where
+    show (World cells) =
+        let
+            show' cell = if cell `elem` cells then " x" else " ."
+            window = do
+                x <- [1..10]
+                y <- [1..10]
+                return (Cell x y)
+        in concat . intercalate ["\n"] . chunksOf 10 $ map show' window
 
 tick :: World -> World
-tick world = liveCells world world ++ resurrectCells world world
+tick world = mergeWorlds (liveCells world world) (resurrectCells world world)
 
-liveCells :: World -> [Cell] -> World
-liveCells world [] = []
-liveCells world (cell : cells)
-    | isAlive cell world = cell : liveCells world cells
-    | otherwise = liveCells world cells
+mergeWorlds :: World -> World -> World
+mergeWorlds (World a) (World b) = World (a ++ b)
 
-resurrectCells :: World -> [Cell] -> World
-resurrectCells world cells =
+liveCells :: World -> World -> World
+liveCells world (World cells) = World $ filter (isAlive world) cells
+
+resurrectCells :: World -> World -> World
+resurrectCells world (World cells) =
     let candidateCells = nub . concat $ map neighboringCells cells
-    in filter (canBeRessurected world) candidateCells
+    in World $ filter (canBeRessurected world) candidateCells
 
-isAlive :: Cell -> World -> Bool
-isAlive cell world =
+isAlive :: World -> Cell -> Bool
+isAlive world cell =
     let count = neighborCount cell world
     in count `elem` [2, 3]
 
@@ -29,34 +39,38 @@ canBeRessurected world cell =
     in count == 3
 
 neighborCount :: Cell -> World -> Int
-neighborCount _ [] = 0
-neighborCount cell (cell' : cells)
-    | areNeighbors cell cell' = 1 + neighborCount cell cells
-    | otherwise = neighborCount cell cells
+neighborCount _ (World []) = 0
+neighborCount cell (World (cell' : cells))
+    | areNeighbors cell cell' = 1 + neighborCount cell (World cells)
+    | otherwise = neighborCount cell (World cells)
 
 neighboringCells :: Cell -> [Cell]
 neighboringCells (Cell x y) = do
     x' <- [x - 1, x, x + 1]
     y' <- [y - 1, y, y + 1]
-    guard (x' /= y')
+    guard (x /= x' || y /= y')
     return (Cell x' y')
 
--- x x x
--- x   x
--- x x x
 areNeighbors :: Cell -> Cell -> Bool
-areNeighbors (Cell x y) (Cell x' y') =
-    let dx = abs (x - x')
-        dy = abs (y - y')
-    in (dx == 1 && dy == 1) ||
-       (dx == 0 && dy == 1) ||
-       (dx == 1 && dy == 0)
+areNeighbors a b = a `elem` (neighboringCells b)
 
--- . x .
--- . x x
+chunksOf :: Int -> [a] -> [[a]]
+chunksOf _ [] = []
+chunksOf n l
+  | n > 0 = (take n l) : (chunksOf n (drop n l))
+  | otherwise = error "Negative n"
+
+ticks :: Int -> World -> World
+ticks 0 world = world
+ticks n world = ticks (n - 1) (tick world)
+
 main =
-    let world = [Cell 1 2, Cell 2 2, Cell 2 3]
+    let world = World [Cell 2 2, Cell 2 3, Cell 2 4]
     in do
         print world
-        print $ tick world
-        print $ tick $ tick world
+        putStr "\n"
+        print $ ticks 1 world
+        putStr "\n"
+        print $ ticks 2 world
+        putStr "\n"
+        print $ ticks 3 world
