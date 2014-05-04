@@ -24,15 +24,15 @@ mergeWorlds :: World -> World -> World
 mergeWorlds (World a) (World b) = World $ nub (a ++ b)
 
 liveCells :: World -> World -> World
-liveCells world (World cells) = World $ filter (isAlive world) cells
+liveCells world (World cells) = World $ filter (canSurvive world) cells
 
 resurrectCells :: World -> World -> World
 resurrectCells world (World cells) =
     let candidateCells = nub . concat $ map neighboringCells cells
     in World $ filter (canBeRessurected world) candidateCells
 
-isAlive :: World -> Cell -> Bool
-isAlive world cell =
+canSurvive :: World -> Cell -> Bool
+canSurvive world cell =
     let count = neighborCount cell world
     in count `elem` [2, 3]
 
