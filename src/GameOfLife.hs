@@ -52,7 +52,7 @@ neighboringCells :: Cell -> [Cell]
 neighboringCells (Cell x y) = do
     x' <- [x - 1, x, x + 1]
     y' <- [y - 1, y, y + 1]
-    guard (x /= x' || y /= y')
+    guard $ (x, y) /= (x', y') -- the cell is not a neighbor of itself.
     return (Cell x' y')
 
 areNeighbors :: Cell -> Cell -> Bool
