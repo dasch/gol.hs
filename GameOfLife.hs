@@ -68,11 +68,18 @@ clear = putStr "\ESC[2J"
 printWorld world = do
     clear
     print world
-    threadDelay 200000
+    threadDelay 400000
 
 evolutions :: World -> [World]
 evolutions = iterate tick
 
+blinker :: Int -> Int -> [Cell]
+blinker x y = [Cell x y, Cell x (y + 1), Cell x (y + 2)]
+
+glider x y = [Cell x (y + 1), Cell (x + 1) (y + 2), Cell (x + 2) y, Cell (x + 2) (y + 1), Cell (x + 2) (y + 2)]
+
+toad x y = [Cell x (y + 1), Cell x (y + 2), Cell x (y + 3), Cell (x + 1) y, Cell (x + 1) (y + 1), Cell (x + 1) (y + 2)]
+
 main =
-    let world = World [Cell 2 2, Cell 2 3, Cell 2 4]
+    let world = World $ blinker 2 2 ++ glider 8 10 ++ toad 12 20
     in mapM printWorld $ evolutions world
