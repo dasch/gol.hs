@@ -1,4 +1,4 @@
-dist/build/gol/gol: src/GameOfLife/Game.hs
+dist/build/gol/gol: src/GameOfLife/*.hs
 	cabal build
 
 test: dist/build/gol/gol
