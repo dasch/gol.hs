@@ -21,7 +21,7 @@ tick :: World -> World
 tick world = mergeWorlds (liveCells world world) (resurrectCells world world)
 
 mergeWorlds :: World -> World -> World
-mergeWorlds (World a) (World b) = World (a ++ b)
+mergeWorlds (World a) (World b) = World $ nub (a ++ b)
 
 liveCells :: World -> World -> World
 liveCells world (World cells) = World $ filter (isAlive world) cells
