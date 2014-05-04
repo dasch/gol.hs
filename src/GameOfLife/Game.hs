@@ -28,10 +28,7 @@ printWorld world = do
     print world
     threadDelay 400000
 
-addPattern :: ([Cell], Int, Int) -> [Cell]
-addPattern (pattern, y, x) = map (moveCell y x) pattern
-
 main =
     let patterns = [(blinker, 2, 2), (glider, 8, 10), (toad, 12, 20), (beacon, 6, 30)]
-        world = World $ concat $ map addPattern patterns
+        world = insertPatterns patterns
     in mapM printWorld $ evolutions world
