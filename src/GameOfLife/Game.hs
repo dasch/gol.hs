@@ -29,5 +29,5 @@ printWorld world = do
     threadDelay 400000
 
 main =
-    let world = World $ blinker 2 2 ++ glider 8 10 ++ toad 12 20
+    let world = World $ blinker 2 2 ++ glider 8 10 ++ toad 12 20 ++ beacon 6 30
     in mapM printWorld $ evolutions world

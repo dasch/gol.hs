@@ -12,6 +12,8 @@ tick world = mergeWorlds (liveCells world world) (resurrectCells world world)
 evolutions :: World -> [World]
 evolutions = iterate tick
 
+moveCell dy dx (Cell y x) = Cell (y + dy) (x + dx)
+
 mergeWorlds :: World -> World -> World
 mergeWorlds (World a) (World b) = World $ nub (a ++ b)
 
