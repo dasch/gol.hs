@@ -56,7 +56,7 @@ canBeRessurected liveCells cell =
 -- For a given cell and set of live cells, finds the subset of the cell's
 -- neighbors that are alive.
 liveNeighbors :: Cell -> [Cell] -> [Cell]
-liveNeighbors cell liveCells = neighboringCells cell `intersect` liveCells
+liveNeighbors cell = intersect $ neighboringCells cell
 
 neighboringCells :: Cell -> [Cell]
 neighboringCells (Cell y x) = do
