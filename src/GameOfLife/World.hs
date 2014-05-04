@@ -14,7 +14,7 @@ data World = World [Cell]
 -- Takes the live cells that survives the round and adds the cells that sprung
 -- to life.
 tick :: World -> World
-tick world = mergeWorlds (survivingCells world world) (resurrectCells world world)
+tick (World cells) = World $ survivingCells cells ++ resurrectCells cells
 
 -- An infinite list of worlds, each being the evolution of the one before it.
 evolutions :: World -> [World]
@@ -29,37 +29,34 @@ moveCells (cells, y, x) = map (moveCell y x) cells
 insertPatterns :: [([Cell], Int, Int)] -> World
 insertPatterns = World . concat . map moveCells
 
-mergeWorlds :: World -> World -> World
-mergeWorlds (World a) (World b) = World $ nub (a ++ b)
+survivingCells :: [Cell] -> [Cell]
+survivingCells liveCells = filter (canSurvive liveCells) liveCells
 
-survivingCells :: World -> World -> World
-survivingCells world (World cells) = World $ filter (canSurvive world) cells
-
-resurrectCells :: World -> World -> World
-resurrectCells world (World cells) =
+resurrectCells :: [Cell] -> [Cell]
+resurrectCells cells =
     let candidateCells = nub . concat $ map neighboringCells cells
-    in World $ filter (canBeRessurected world) candidateCells
+    in filter (canBeRessurected cells) candidateCells
 
 -- Figures out whether the cell can survive.
-canSurvive :: World -> Cell -> Bool
-canSurvive world cell =
+canSurvive :: [Cell] -> Cell -> Bool
+canSurvive liveCells cell =
     -- We count the live neighbors, but only consider the first four, since we
     -- really only care whether the count is either two or three.
-    let count = length $ take 4 $ liveNeighbors cell world
+    let count = length $ take 4 $ liveNeighbors cell liveCells
     in count `elem` [2, 3]
 
 -- Figures out whether the cell can be resurrected.
-canBeRessurected :: World -> Cell -> Bool
-canBeRessurected world cell =
+canBeRessurected :: [Cell] -> Cell -> Bool
+canBeRessurected liveCells cell =
     -- We count the live neighbors, but only consider the first four, since we
     -- really only care whether the count is eyactly three.
-    let count = length $ take 4 $ liveNeighbors cell world
+    let count = length $ take 4 $ liveNeighbors cell liveCells
     in count == 3
 
 -- For a given cell and set of live cells, finds the subset of the cell's
 -- neighbors that are alive.
-liveNeighbors :: Cell -> World -> [Cell]
-liveNeighbors cell (World liveCells) = neighboringCells cell `intersect` liveCells
+liveNeighbors :: Cell -> [Cell] -> [Cell]
+liveNeighbors cell liveCells = neighboringCells cell `intersect` liveCells
 
 neighboringCells :: Cell -> [Cell]
 neighboringCells (Cell y x) = do
