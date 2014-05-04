@@ -55,7 +55,7 @@ canBeRessurected world cell =
     in count == 3
 
 liveNeighbors :: Cell -> World -> [Cell]
-liveNeighbors cell (World liveCells) = filter (areNeighbors cell) liveCells
+liveNeighbors cell (World liveCells) = neighboringCells cell `intersect` liveCells
 
 neighboringCells :: Cell -> [Cell]
 neighboringCells (Cell y x) = do
@@ -63,6 +63,3 @@ neighboringCells (Cell y x) = do
     x' <- [x - 1, x, x + 1]
     guard $ (y, x) /= (y', x') -- the cell is not a neighbor of itself.
     return (Cell y' x')
-
-areNeighbors :: Cell -> Cell -> Bool
-areNeighbors a b = a `elem` (neighboringCells b)
