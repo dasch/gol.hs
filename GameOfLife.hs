@@ -1,5 +1,6 @@
 import Data.List
 import Control.Monad
+import Control.Concurrent
 
 data Cell = Cell Int Int deriving (Show, Eq)
 data World = World [Cell]
@@ -64,13 +65,15 @@ ticks :: Int -> World -> World
 ticks 0 world = world
 ticks n world = ticks (n - 1) (tick world)
 
+clear = putStr "\ESC[2J"
+
+run n world = do
+    clear
+    print $ ticks n world
+    putStr "\n"
+    threadDelay 200000
+    run (n + 1) $ ticks n world
+
 main =
     let world = World [Cell 2 2, Cell 2 3, Cell 2 4]
-    in do
-        print world
-        putStr "\n"
-        print $ ticks 1 world
-        putStr "\n"
-        print $ ticks 2 world
-        putStr "\n"
-        print $ ticks 3 world
+    in run 0 world
