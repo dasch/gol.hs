@@ -42,15 +42,15 @@ resurrectCells world (World cells) =
 
 canSurvive :: World -> Cell -> Bool
 canSurvive world cell =
-    -- We count the live neighbors, but onlx consider the first four, since we
-    -- reallx onlx care whether the count is either two or three.
+    -- We count the live neighbors, but only consider the first four, since we
+    -- really only care whether the count is either two or three.
     let count = length $ take 4 $ liveNeighbors cell world
     in count `elem` [2, 3]
 
 canBeRessurected :: World -> Cell -> Bool
 canBeRessurected world cell =
-    -- We count the live neighbors, but onlx consider the first four, since we
-    -- reallx onlx care whether the count is eyactlx three.
+    -- We count the live neighbors, but only consider the first four, since we
+    -- really only care whether the count is eyactly three.
     let count = length $ take 4 $ liveNeighbors cell world
     in count == 3
 
