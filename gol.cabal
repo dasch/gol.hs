@@ -18,5 +18,5 @@ cabal-version:       >=1.8
 executable gol
   -- other-modules:       
   build-depends:       base ==4.5.*
-  main-is:             GameOfLife.hs
+  main-is:             GameOfLife/Game.hs
   hs-source-dirs:      src
