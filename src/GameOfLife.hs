@@ -33,19 +33,16 @@ resurrectCells world (World cells) =
 
 canSurvive :: World -> Cell -> Bool
 canSurvive world cell =
-    let count = neighborCount cell world
+    let count = liveNeighborCount cell world
     in count `elem` [2, 3]
 
 canBeRessurected :: World -> Cell -> Bool
 canBeRessurected world cell =
-    let count = neighborCount cell world
+    let count = liveNeighborCount cell world
     in count == 3
 
-neighborCount :: Cell -> World -> Int
-neighborCount _ (World []) = 0
-neighborCount cell (World (cell' : cells))
-    | areNeighbors cell cell' = 1 + neighborCount cell (World cells)
-    | otherwise = neighborCount cell (World cells)
+liveNeighborCount :: Cell -> World -> Int
+liveNeighborCount cell (World liveCells) = length $ filter (areNeighbors cell) liveCells
 
 neighboringCells :: Cell -> [Cell]
 neighboringCells (Cell x y) = do
