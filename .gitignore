@@ -1,3 +1,4 @@
 GameOfLife
 *.hi
 *.o
+dist

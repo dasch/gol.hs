@@ -1,5 +1,5 @@
-GameOfLife: GameOfLife.hs
-	ghc GameOfLife.hs
+dist/build/gol/gol: src/GameOfLife.hs
+	cabal build
 
-test: GameOfLife
-	./GameOfLife
+test: dist/build/gol/gol
+	./dist/build/gol/gol
