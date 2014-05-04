@@ -33,12 +33,16 @@ resurrectCells world (World cells) =
 
 canSurvive :: World -> Cell -> Bool
 canSurvive world cell =
-    let count = length $ liveNeighbors cell world
+    -- We count the live neighbors, but only consider the first four, since we
+    -- really only care whether the count is either two or three.
+    let count = length $ take 4 $ liveNeighbors cell world
     in count `elem` [2, 3]
 
 canBeRessurected :: World -> Cell -> Bool
 canBeRessurected world cell =
-    let count = length $ liveNeighbors cell world
+    -- We count the live neighbors, but only consider the first four, since we
+    -- really only care whether the count is exactly three.
+    let count = length $ take 4 $ liveNeighbors cell world
     in count == 3
 
 liveNeighbors :: Cell -> World -> [Cell]
