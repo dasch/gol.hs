@@ -10,9 +10,9 @@ instance Show World where
             rows = 40
             show' cell = if cell `elem` cells then " @" else " ."
             window = do
-                x <- [1..rows]
-                y <- [1..cols]
-                return (Cell x y)
+                y <- [1..rows]
+                x <- [1..cols]
+                return (Cell y x)
         in concat . intercalate ["\n"] . chunksOf cols $ map show' window
 
 chunksOf :: Int -> [a] -> [[a]]
