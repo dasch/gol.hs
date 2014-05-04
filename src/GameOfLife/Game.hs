@@ -29,6 +29,11 @@ printWorld world = do
     threadDelay 400000
 
 main =
-    let patterns = [(blinker, 2, 2), (glider, 8, 10), (toad, 12, 20), (beacon, 6, 30)]
+    let patterns = [
+            (blinker, 2, 2),
+            (glider, 8, 10),
+            (toad, 12, 20),
+            (beacon, 6, 30),
+            (acorn, 30, 50)]
         world = insertPatterns patterns
     in mapM printWorld $ evolutions world

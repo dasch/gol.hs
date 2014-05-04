@@ -15,3 +15,7 @@ beacon = parsePattern ["@ @ . .",
                        "@ @ . .",
                        ". . @ @",
                        ". . @ @"]
+
+acorn = parsePattern [". @ . . . . .",
+                      ". . . @ . . .",
+                      "@ @ . . @ @ @"]
