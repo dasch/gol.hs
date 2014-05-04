@@ -8,12 +8,14 @@ data World = World [Cell]
 instance Show World where
     show (World cells) =
         let
+            cols = 90
+            rows = 40
             show' cell = if cell `elem` cells then " x" else " ."
             window = do
-                x <- [1..10]
-                y <- [1..10]
+                x <- [1..rows]
+                y <- [1..cols]
                 return (Cell x y)
-        in concat . intercalate ["\n"] . chunksOf 10 $ map show' window
+        in concat . intercalate ["\n"] . chunksOf cols $ map show' window
 
 tick :: World -> World
 tick world = mergeWorlds (liveCells world world) (resurrectCells world world)
