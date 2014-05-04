@@ -61,19 +61,16 @@ chunksOf n l
   | n > 0 = (take n l) : (chunksOf n (drop n l))
   | otherwise = error "Negative n"
 
-ticks :: Int -> World -> World
-ticks 0 world = world
-ticks n world = ticks (n - 1) (tick world)
-
 clear = putStr "\ESC[2J"
 
-run n world = do
+printWorld world = do
     clear
-    print $ ticks n world
-    putStr "\n"
+    print world
     threadDelay 200000
-    run (n + 1) $ ticks n world
+
+evolutions :: World -> [World]
+evolutions = iterate tick
 
 main =
     let world = World [Cell 2 2, Cell 2 3, Cell 2 4]
-    in run 0 world
+    in mapM printWorld $ evolutions world
