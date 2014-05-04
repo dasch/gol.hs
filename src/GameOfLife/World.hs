@@ -3,12 +3,20 @@ module GameOfLife.World where
 import Data.List
 import Control.Monad
 
+-- A cell is represented by its location in the world.
 data Cell = Cell Int Int deriving (Show, Eq)
+
+-- The world is represented by a list of live cells.
 data World = World [Cell]
 
+-- Evolves the world a single step.
+--
+-- Takes the live cells that survives the round and adds the cells that sprung
+-- to life.
 tick :: World -> World
 tick world = mergeWorlds (liveCells world world) (resurrectCells world world)
 
+-- An infinite list of worlds, each being the evolution of the one before it.
 evolutions :: World -> [World]
 evolutions = iterate tick
 
