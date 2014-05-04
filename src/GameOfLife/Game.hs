@@ -2,6 +2,7 @@ import Data.List
 import Control.Concurrent
 import GameOfLife.World
 import GameOfLife.Patterns
+import GameOfLife.Utils
 
 instance Show World where
     show (World cells) =

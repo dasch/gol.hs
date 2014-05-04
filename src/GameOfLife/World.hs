@@ -20,15 +20,6 @@ tick (World cells) = World $ survivingCells cells ++ resurrectCells cells
 evolutions :: World -> [World]
 evolutions = iterate tick
 
-moveCell dy dx (Cell y x) = Cell (y + dy) (x + dx)
-
-moveCells :: ([Cell], Int, Int) -> [Cell]
-moveCells (cells, y, x) = map (moveCell y x) cells
-
--- Inserts the list of patterns at the specified locations.
-insertPatterns :: [([Cell], Int, Int)] -> World
-insertPatterns = World . concat . map moveCells
-
 survivingCells :: [Cell] -> [Cell]
 survivingCells liveCells = filter (canSurvive liveCells) liveCells
 
