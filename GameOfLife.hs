@@ -10,7 +10,7 @@ instance Show World where
         let
             cols = 90
             rows = 40
-            show' cell = if cell `elem` cells then " x" else " ."
+            show' cell = if cell `elem` cells then " @" else " ."
             window = do
                 x <- [1..rows]
                 y <- [1..cols]
