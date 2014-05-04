@@ -40,6 +40,7 @@ resurrectCells world (World cells) =
     let candidateCells = nub . concat $ map neighboringCells cells
     in World $ filter (canBeRessurected world) candidateCells
 
+-- Figures out whether the cell can survive.
 canSurvive :: World -> Cell -> Bool
 canSurvive world cell =
     -- We count the live neighbors, but only consider the first four, since we
@@ -47,6 +48,7 @@ canSurvive world cell =
     let count = length $ take 4 $ liveNeighbors cell world
     in count `elem` [2, 3]
 
+-- Figures out whether the cell can be resurrected.
 canBeRessurected :: World -> Cell -> Bool
 canBeRessurected world cell =
     -- We count the live neighbors, but only consider the first four, since we
@@ -54,6 +56,8 @@ canBeRessurected world cell =
     let count = length $ take 4 $ liveNeighbors cell world
     in count == 3
 
+-- For a given cell and set of live cells, finds the subset of the cell's
+-- neighbors that are alive.
 liveNeighbors :: Cell -> World -> [Cell]
 liveNeighbors cell (World liveCells) = neighboringCells cell `intersect` liveCells
 
