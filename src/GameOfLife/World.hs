@@ -14,7 +14,7 @@ data World = World [Cell]
 -- Takes the live cells that survives the round and adds the cells that sprung
 -- to life.
 tick :: World -> World
-tick (World cells) = World $ survivingCells cells ++ resurrectCells cells
+tick (World cells) = World $ nub $ survivingCells cells ++ resurrectCells cells
 
 -- An infinite list of worlds, each being the evolution of the one before it.
 evolutions :: World -> [World]
