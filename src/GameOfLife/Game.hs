@@ -5,15 +5,20 @@ import GameOfLife.Patterns
 import GameOfLife.Utils
 
 instance Show World where
-    show (World cells) =
+    show (World liveCells) =
         let
             cols = 90
             rows = 40
-            window = createWindow rows cols
-            show' cell = if cell `elem` cells then " @" else " ."
-        in concat . intercalate ["\n"] . chunksOf cols $ map show' window
+            windowCells = blockOfCells rows cols
+            renderedCells = map (renderCell liveCells) windowCells
+            lines = chunksOf cols renderedCells
+        in concat . intercalate ["\n"] $ lines
 
-createWindow rows cols = do
+renderCell :: [Cell] -> Cell -> String
+renderCell liveCells cell = if cell `elem` liveCells then " @" else " ."
+
+blockOfCells :: Int -> Int -> [Cell]
+blockOfCells rows cols = do
     y <- [1..rows]
     x <- [1..cols]
     return (Cell y x)
