@@ -1,39 +1,14 @@
-import Data.List
 import Control.Concurrent
 import GameOfLife.World
 import GameOfLife.Patterns
 import GameOfLife.Utils
-
-instance Show World where
-    show (World liveCells) =
-        let
-            cols = 90
-            rows = 40
-            windowCells = blockOfCells rows cols
-            renderedCells = map (renderCell liveCells) windowCells
-            lines = chunksOf cols renderedCells
-        in concat . intercalate ["\n"] $ lines
-
-renderCell :: [Cell] -> Cell -> String
-renderCell liveCells cell = if cell `elem` liveCells then " @" else " ."
-
-blockOfCells :: Int -> Int -> [Cell]
-blockOfCells rows cols = do
-    y <- [1..rows]
-    x <- [1..cols]
-    return (Cell y x)
-
-chunksOf :: Int -> [a] -> [[a]]
-chunksOf _ [] = []
-chunksOf n l
-  | n > 0 = (take n l) : (chunksOf n (drop n l))
-  | otherwise = error "Negative n"
+import GameOfLife.UI
 
 clear = putStr "\ESC[2J"
 
-printWorld world = do
+updateScreen content = do
     clear
-    print world
+    putStrLn content
     threadDelay 400000
 
 main =
@@ -47,4 +22,4 @@ main =
             (beacon, 6, 30),
             (acorn, 30, 50)]
         world = insertPatterns patterns
-    in mapM printWorld $ evolutions world
+    in mapM updateScreen $ map (window 40 90) $ evolutions world
