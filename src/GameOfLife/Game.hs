@@ -9,12 +9,14 @@ instance Show World where
         let
             cols = 90
             rows = 40
+            window = createWindow rows cols
             show' cell = if cell `elem` cells then " @" else " ."
-            window = do
-                y <- [1..rows]
-                x <- [1..cols]
-                return (Cell y x)
         in concat . intercalate ["\n"] . chunksOf cols $ map show' window
+
+createWindow rows cols = do
+    y <- [1..rows]
+    x <- [1..cols]
+    return (Cell y x)
 
 chunksOf :: Int -> [a] -> [[a]]
 chunksOf _ [] = []
