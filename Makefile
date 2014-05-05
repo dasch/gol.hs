@@ -1,5 +1,8 @@
-dist/build/gol/gol: src/GameOfLife/*.hs
+compile: src/GameOfLife/*.hs
 	cabal build
 
-test: dist/build/gol/gol
+test: compile
 	./dist/build/gol/gol
+
+profile: compile
+	./dist/build/gol-profile/gol-profile
