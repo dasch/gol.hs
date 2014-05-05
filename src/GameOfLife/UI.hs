@@ -15,7 +15,8 @@ renderWindow :: Window -> World -> String
 renderWindow (Window rows cols windowCells) (World liveCells) =
     let renderedCells = map (renderCell liveCells) windowCells
         lines = chunksOf cols renderedCells
-    in concat . intercalate ["\n"] $ lines
+        content = concat . intercalate ["\n"] $ lines
+    in "Live cells: " ++ show (length liveCells) ++ "\n\n" ++ content
 
 renderCell :: [Cell] -> Cell -> String
 renderCell liveCells cell = if cell `elem` liveCells then " @" else " ."
