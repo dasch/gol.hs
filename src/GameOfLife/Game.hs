@@ -6,10 +6,12 @@ import GameOfLife.UI
 
 clear = putStr "\ESC[2J"
 
-updateScreen content = do
+updateScreen (content, iteration) = do
     clear
     putStrLn content
-    threadDelay 400000
+    putStrLn "\n"
+    putStrLn $ "Iteration: " ++ show iteration
+    threadDelay 100000
 
 main =
     let patterns = [
@@ -22,4 +24,5 @@ main =
             (beacon, 6, 30),
             (acorn, 30, 50)]
         world = insertPatterns patterns
-    in mapM updateScreen $ map (window 40 90) $ evolutions world
+        windowIterations = map (window 40 90) $ evolutions world
+    in mapM updateScreen $ zip windowIterations [1..]
