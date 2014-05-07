@@ -9,4 +9,4 @@ moveCells (cells, y, x) = map (moveCell y x) cells
 
 -- Inserts the list of patterns at the specified locations.
 insertPatterns :: [([Cell], Int, Int)] -> World
-insertPatterns = World . concat . map moveCells
+insertPatterns patterns = worldWithCells $ concat $ map moveCells patterns

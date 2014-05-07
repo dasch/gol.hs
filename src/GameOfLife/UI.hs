@@ -12,14 +12,14 @@ createWindow :: Int -> Int -> Window
 createWindow rows cols = Window rows cols $ blockOfCells rows cols
 
 renderWindow :: Window -> World -> String
-renderWindow (Window rows cols windowCells) (World liveCells) =
-    let renderedCells = map (renderCell liveCells) windowCells
+renderWindow (Window rows cols windowCells) world =
+    let renderedCells = map (renderCell world) windowCells
         lines = chunksOf cols renderedCells
         content = concat . intercalate ["\n"] $ lines
-    in "Live cells: " ++ show (length liveCells) ++ "\n\n" ++ content
+    in "Live cells: " ++ show (cellCount world) ++ "\n\n" ++ content
 
-renderCell :: [Cell] -> Cell -> String
-renderCell liveCells cell = if cell `elem` liveCells then " @" else " ."
+renderCell :: World -> Cell -> String
+renderCell world cell = if cell `inWorld` world then " @" else " ."
 
 blockOfCells :: Int -> Int -> [Cell]
 blockOfCells rows cols = do

@@ -1,4 +1,13 @@
-module GameOfLife.World where
+module GameOfLife.World (
+    newWorld,
+    World,
+    worldWithCells,
+    inWorld,
+    Cell (..),
+    cellCount,
+    cellsIn,
+    evolutions
+) where
 
 import Data.List
 import Control.Monad
@@ -8,6 +17,15 @@ data Cell = Cell Int Int deriving (Show, Eq)
 
 -- The world is represented by a list of live cells.
 data World = World [Cell]
+
+newWorld :: World
+newWorld = World []
+
+worldWithCells = World
+
+cellsIn (World cells) = cells
+
+cell `inWorld` World liveCells = cell `elem` liveCells
 
 -- Evolves the world a single step.
 --
@@ -19,6 +37,9 @@ tick (World cells) = World $ nub $ survivingCells cells ++ resurrectCells cells
 -- An infinite list of worlds, each being the evolution of the one before it.
 evolutions :: World -> [World]
 evolutions = iterate tick
+
+cellCount :: World -> Int
+cellCount (World liveCells) = length liveCells
 
 survivingCells :: [Cell] -> [Cell]
 survivingCells liveCells = filter (canSurvive liveCells) liveCells

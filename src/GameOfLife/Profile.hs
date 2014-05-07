@@ -15,5 +15,5 @@ main =
             (beacon, 6, 30),
             (acorn, 30, 50)]
         world = insertPatterns patterns
-        (World liveCells) = head $ drop 400 $ evolutions world
+        liveCells = cellsIn $ head $ drop 400 $ evolutions world
     in print $ length liveCells
