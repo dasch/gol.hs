@@ -19,18 +19,3 @@ The program is structured into several modules:
 * `GameOfLife.Patterns` contains commonly used "patterns" of cells.
 * `GameOfLife.Parser` contains functions that allow parsing a textual representation of a set of cells.
 * `GameOfLife.Game` contains the actual executable part of the game.
-
-
-###### The World
-
-
-The World in Game of Life is conceptually an infinite plane of cells, only some finite subset of which are alive. The game progresses by applying the rules of the game, yielding a new World with a potentially different set of live cells. This process is repeated indefinitely.
-
-In this implementation the World is represented by a list of live cells, each identified by its position on the plane:
-
-```haskell
-data Cell = Cell Int Int
-data World = World [Cell]
-```
-
-Since list processing is at the heart of languages like Haskell, this was a natural choice.
